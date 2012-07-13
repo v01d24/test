@@ -1,0 +1,2 @@
+{% for model in models %}{{ model.id }}*{{ model.name }}/{% endfor %}
+

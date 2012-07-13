@@ -1,0 +1,107 @@
+<html>
+<head>
+<title>Главная страница</title>
+</head>
+<body>
+<h1>
+Катáлог
+</h1>
+<hr>
+{% if username %}
+  <form action="accounts/logout/" method="post"> {% csrf_token %}
+	<label for="username">Hi, {{ username }}</label>
+    <input type="submit" value="logout" />
+    <input type="hidden" name="next" value="{{ next|escape }}" />
+  </form>
+{% else %}
+  {% if form.errors %}
+    <p class="error">Неправильный логин или пароль</p>
+  {% endif %}
+  <form action="accounts/login/" method='post'> {% csrf_token %}
+    <label for="username">Логин:</label>
+    <input type="text" name="username" value="" id="username">
+    <label for="password">Пароль:</label>
+    <input type="password" name="password" value="" id="password">
+
+    <input type="submit" value="login" />
+    <input type="hidden" name="next" value="{{ next|escape }}" />
+  </form>
+{% endif %}
+<hr>
+<P>   
+	{% if text_enabled %}
+	Результат поиска по запросу: {{ request }}
+	<form action="/" method="get">
+    <input type="submit" value="Сброс">
+    </form>
+	{% else %}
+	Поиск
+	<form action="/" method="get">
+    <input type="text" name="q">
+    <input type="submit" value="Поиск">
+    </form>
+	{% endif %}
+</P>
+<hr>
+<table WIDTH="80%">
+  <TR BGCOLOR=#CCCCCC>
+    <TD ALIGN="CENTER" WIDTH="15%"><STRONG>Производитель</STRONG></TD>
+    <TD ALIGN="CENTER" WIDTH="15%"><STRONG>Модель</STRONG></TD>
+	<TD ALIGN="CENTER" WIDTH="15%"><STRONG>Год выпуска</STRONG></TD>
+	<TD ALIGN="CENTER" WIDTH="15%"><STRONG>Цвет</STRONG></TD>
+	<TD ALIGN="CENTER" WIDTH="15%"><STRONG>Мощность</STRONG></TD>
+	<TD ALIGN="CENTER" WIDTH="13%"><STRONG>Фото</STRONG></TD>
+{% if username %}
+	<TD ALIGN="CENTER" WIDTH="12%"></TD>
+{% endif %}
+  </TR>
+{% for item in aitems %}
+  <TR BGCOLOR=#CCCCCC>
+    <TD ALIGN="CENTER">{{ item.amodel.amanufact.name }}</TD>
+    <TD ALIGN="CENTER">{{ item.amodel.name }}</TD>
+	<TD ALIGN="CENTER">{{ item.mfdate|date:'Y-m-d' }}</TD>
+	<TD ALIGN="CENTER">{{ item.color }}</TD>
+	<TD ALIGN="CENTER">{{ item.hp }}</TD>
+	<TD ALIGN="CENTER"><a href="preview/{{ item.id }}/0/">Просмотр</a></TD>
+{% if username %}
+	<TD ALIGN="CENTER">
+		<form action="/edit/itm/" method="get">
+		<input name="item_id" type="hidden" value="{{ item.id }}" />
+		<input type="submit" value="Правка">
+    	</form>
+		<form action="/delete/itm/" method="get">
+		<input name="item_id" type="hidden" value="{{ item.id }}" />
+		<input type="submit" value="Удалить">
+    	</form>
+	</TD>
+{% endif %}
+  </TR>
+{% endfor %}
+</table>
+{% if username %}
+<table  WIDTH="80%">
+  <TR BGCOLOR=#CCCCCC>
+    <TD ALIGN="CENTER" WIDTH="15%">
+		<form action="/add/man/" method="get">
+    	{# <input type="submit" value="Добавить"> #}
+    	</form>
+	</TD>
+    <TD ALIGN="CENTER" WIDTH="15%">
+		<form action="/add/mod/" method="get">
+    	{# <input type="submit" value="Добавить"> #}
+    	</form>
+	</TD>
+	<TD ALIGN="CENTER">
+		<form action="/add/itm/" method="get">
+    	<input type="submit" value="Добавить наименование">
+    	</form>
+	</TD>
+  </TR>
+</table>
+{% endif %}
+<hr>
+<a href="/catalog2/">Ещё каталог</a>
+<hr>
+<center>Time: {{current_date}} <br> <a href="/admin/">админка</a></center>
+</body>
+</html>

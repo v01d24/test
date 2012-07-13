@@ -1,0 +1,14 @@
+<html>
+<head>
+    <title>Каталог</title>
+</head>
+<body>
+    <h1>Каталог</h1>
+<ul>
+{% for item in items %}
+<li><a href="/catalog2/edit/{{ item.id }}/">{{ item }}</a> <a href="/catalog2/del/{{ item.id }}/">[x]</a></li>
+{% endfor %}
+<li><a href="/catalog2/add/">...</a></li>
+</ul>
+</body>
+</html>
