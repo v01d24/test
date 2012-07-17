@@ -9,7 +9,6 @@ class DynamicChoiceField(forms.ChoiceField):
 class AItemForm(forms.Form):
     aid = forms.IntegerField(widget=forms.HiddenInput(), initial=-1)
     amanufact = forms.ModelChoiceField(queryset=AManufact.objects.all(), label='Производитель')
-    #amanufact = forms.ChoiceField(label='Производитель')
     amodel = DynamicChoiceField(label='Модель')
     color = forms.CharField(label='Цвет')
     hp = forms.IntegerField(label='Мощность')
